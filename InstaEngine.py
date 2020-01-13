@@ -721,4 +721,4 @@ class InstaAuto:
 
 if __name__ == "__main__":
     obj = InstaAuto()
-    obj.insta_auto_start("devendra900", "devendrakaithal", 5)
+    obj.insta_auto_start("username", "passward", 5)
