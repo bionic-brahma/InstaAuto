@@ -8,7 +8,15 @@ import re
 
 calib_factor_for_scroll_up = 650
 driver = webdriver.Firefox()
-driver.get("http:\\www.instagram.com")
+
+while 1:
+    try:
+        driver.get("http:\\www.instagram.com")
+        break;
+    except:
+        sleep(2)
+        print('No Internet connection, Retrying!')
+        print("Check internet connections")
 
 
 class InstaAuto:
@@ -42,6 +50,7 @@ class InstaAuto:
 
     def comment_generator(self):
         return self.comments[random.randint(0, len(comments))]
+        #return "Nice"
 
     def keyboard_input_human_imitator(self, string_to_be_sent, element):
         '''
@@ -340,7 +349,7 @@ class InstaAuto:
                 print(
                     "*************************************************************************scroll down test succesee")
                 sleep(1)
-                scroll_down(pixel=pxl, time_lag=random.randint(25, 50) / 1000, iteration=step)
+                self.scroll_down(pixel=pxl, time_lag=random.randint(25, 50) / 1000, iteration=step)
                 if pxl <= 2:
                     break
         else:
@@ -348,7 +357,7 @@ class InstaAuto:
                 print(
                     "*************************************************************************scroll up test succesee")
                 sleep(1)
-                scroll_up(pixel=-pxl, time_lag=random.randint(35, 60) / 1000, iteration=step)
+                self.scroll_up(pixel=-pxl, time_lag=random.randint(35, 60) / 1000, iteration=step)
                 if (-pxl) <= 2:
                     break
 
@@ -422,7 +431,7 @@ class InstaAuto:
                         comment_field.click()
                     except:
                         print("[failure]unable to click at the comment field")
-                    self.keyboard_input_human_imitator(comment_generator(), comment_field)
+                    self.keyboard_input_human_imitator(self.comment_generator(), comment_field)
                     self.button_clicker("Post")
 
                 except:
@@ -549,7 +558,7 @@ class InstaAuto:
 
     def insta_strategy_one(self):
         choice = random.randint(1, 7)
-        # choice = 5
+        #choice = 2
 
         if choice == 1:
             """
@@ -569,21 +578,25 @@ class InstaAuto:
                     random.randint(0, len(comment_fields_on_home_page) - 1)]
                 try:
                     self.scroll_to(selected_comment_field.location['y'] - calib_factor_for_scroll_up, step=50)
-                except:
+                except Exception as err:
+                    print(err)
                     print("[failure]Getting Location of a comment field failed.")
                 try:
                     self.human_effect_delay()
                     selected_comment_field.click()
-                except:
+                except Exception as err:
+                    print(err)
                     print("[failure]unable to click at the comment field")
                 try:
-                    self.keyboard_input_human_imitator(comment_generator(), selected_comment_field)
-                except:
+                    self.keyboard_input_human_imitator(self.comment_generator(), selected_comment_field)
+                except Exception as err:
+                    print(err)
                     print("Cant Comment [X]")
                 sleep(2)
                 try:
                     selected_comment_field.send_keys(Keys.ENTER)
-                except:
+                except Exception as err:
+                    print(err)
                     print("Cant press enter key [X]")
 
             else:
@@ -661,8 +674,14 @@ class InstaAuto:
         if choice == 6:
             """The choice 6 is to refresh"""
             print("refresh choice")
-            driver.refresh()
-
+            while 1:
+                try:
+                    driver.refresh()
+                    break
+                except:
+                    sleep(2)
+                    print('No Internet connection, Retrying!')
+                    print("Check internet connections")
         if choice == 7:
             """This choice is to follow any random user mentioned on homepage"""
             print("Follow users profile by opening choice")
@@ -721,4 +740,4 @@ class InstaAuto:
 
 if __name__ == "__main__":
     obj = InstaAuto()
-    obj.insta_auto_start("passward", "username", 5)
+    obj.insta_auto_start("password", "username", number_of_actions)
